@@ -1,0 +1,42 @@
+(* shapes version: 6 *)
+ais_finiteaaddV0V1Iais_finiteV1Iais_finiteV0F
+empty_shape
+ais_finiteamulV0V1Iais_finiteV1Iais_finiteV0F
+ais_finiteainv_fractV0Ia>anumeratorV0c0F
+ais_finiteadivV0V1Ia>anumeratorV1c0Iais_finiteV0F
+ais_finiteax
+ais_finiteay
+a=aevalamulaxaya*.aevalaxaevalay
+a=aevalamulV0V1a*.aevalV0aevalV1Iais_finiteV1Iais_finiteV0F
+a=aevalaaddaxaya+.aevalaxaevalay
+a=aevalaaddV0V1a+.aevalV0aevalV1Iais_finiteV1Iais_finiteV0F
+a=aevalainv_fractV0a/.c1.p0e0aevalV0INa===V0azeroIais_finiteV0F
+Na===ayazero
+a=aevaladivaxaya/.aevalaxaevalay
+a=aevaladivV0V1a/.aevalV0aevalV1INa===V1azeroIais_finiteV1Iais_finiteV0F
+a===axay
+a=a/.a*.afrom_intanumeratoraxafrom_intadenominatorayafrom_intadenominatoraxa/.a*.afrom_intanumeratorayafrom_intadenominatoraxafrom_intadenominatorax
+a=aevalaxaevalay
+a=aevalV0aevalV1ItOa=a/.a*.afrom_intanumeratorV0afrom_intadenominatorV1afrom_intadenominatorV0a/.a*.afrom_intanumeratorV1afrom_intadenominatorV0afrom_intadenominatorV0Ia===V0V1Iais_finiteV1Iais_finiteV0F
+a<=:axay
+a<=.a/.a/.a*.afrom_intanumeratoraxafrom_intadenominatorayafrom_intadenominatoraxafrom_intadenominatorayaevalay
+a<=.aevalaxaevalay
+a<=.aevalV0aevalV1ItOa<=.a/.a/.a*.afrom_intanumeratorV0afrom_intadenominatorV1afrom_intadenominatorV0afrom_intadenominatorV1aevalV1Ia<=:V0V1Iais_finiteV1Iais_finiteV0F
+
+47a5dd61dc473bebe293eee26818d5d3 1H0
+39c2c3f3aa94e61bccfad09ce042899b 1H2
+4134a716e60c2d79d8d60f37ca62147e 1H3
+6d9482c55ef2bb9b6dd38fc2c38ac7ca 1H4
+409d943ddd845bbab9bc3347ee91667b 1H8
+e61d8ca84dab2d1f6d27fb1c4691e70a 1H7H6H5
+f6fa5ddb1123eb2358eef587bab793ed 1H10
+c09d4bd76bb3463d1df6aac46fb6aadb 1H9H6H5
+0f19ab1a344be151bfa8f735130a5b79 1H11
+a81dcf0931830066e743586fed3372d7 1H14
+343ce2a4c1b4844af9d88b0c40947fdd 1H13H12H6H5
+aa0e16366a90544fd48bc837a93ca931 1H18
+a3ea539959e3148421441a5aea1eed42 1H16H15H6H5
+e08b9fb6ec251c1989c04129c39c0c8b 1H17H16H15H6H5
+6a06144ab12513d6159a536069bee508 1H22
+d8a98726ad9f8e33b97944ed281f4eca 1H20H19H6H5
+4ede051b16b9d803e178f767c91b22d4 1H21H20H19H6H5

@@ -1,0 +1,215 @@
+use int.Int
+use int.EuclideanDivision
+
+type fraction = { numerator: int; denominator: int; }
+
+function add (x y: fraction): fraction 
+  = { numerator = x.numerator * y.denominator + y.numerator * x.denominator;
+      denominator = x.denominator * y.denominator }
+
+function mul (x y: fraction): fraction
+  = { numerator = x.numerator * y.numerator;
+      denominator = x.denominator * y.denominator }
+
+function inv (x: fraction): fraction
+  = { numerator = x.denominator;
+      denominator = x.numerator }
+      
+predicate is_finite (x: fraction)
+  = x.denominator > 0
+
+goal add_is_closed:
+    forall a b. is_finite a -> is_finite b -> is_finite (add a b)
+
+goal mul_is_closed:
+    forall a b. is_finite a -> is_finite b -> is_finite (mul a b)
+
+goal inv_is_closed:
+    forall a. a.numerator > 0 -> is_finite (inv a)
+
+goal assoc_add:
+    forall a b c. add a (add b c) = add (add a b) c
+     
+goal commut_add:
+    forall a b. add a b = add b a
+
+goal assoc_mul:
+    forall a b c. mul a (mul b c) = mul (mul a b) c
+     
+goal commut_mul:
+    forall a b. mul a b = mul b a
+
+constant one: fraction = { numerator = 1; denominator = 1 }
+constant zero: fraction = { numerator = 0; denominator = 1 }
+
+goal zero_is_identity:
+    forall a. add a zero = a
+goal one_is_identity:
+    forall a. mul a one = a
+
+predicate (===) (x: fraction) (y: fraction)
+  = x.numerator * y.denominator = x.denominator * y.numerator
+
+let rec lemma equiv_helper (x a b: int)
+  requires { x > 0 }
+  requires { a * x = b * x }
+  ensures { a = b }
+  variant { x }
+= if x > 1 then equiv_helper (x-1) a b
+
+lemma equiv_helper_2:
+  forall x a b. x < 0 ->
+      a * x = b * x ->
+      a = b
+      by -a * -x = -b * -x
+
+goal equivalence_relation:
+    (forall x. x === x) /\
+    (forall x y. x === y -> y === x) /\
+    (forall x y z.  is_finite y -> x === y -> y === z -> x === z
+         by x.numerator * z.denominator * y.numerator = z.numerator * x.denominator * y.numerator 
+    )
+
+goal zero_has_many_reprs:
+    forall x. x.numerator = 0 <-> x === zero
+
+goal mul_has_inverse:
+    forall a. mul a (inv a) === one
+    
+goal distributivity:
+    forall a b c. mul a (add b c) === add (mul a b) (mul a c)
+
+predicate (<:) (x y: fraction)
+  = let lhs = x.numerator * y.denominator in
+    let rhs = x.denominator * y.numerator in
+    lhs < rhs
+  
+goal strict_order:
+    (forall x y. not (x <: y /\ y <: x)) /\
+    (forall x y z. 
+        is_finite x ->
+        is_finite y \/ y.denominator = 0 /\ y.numerator > 0 ->
+        is_finite z ->
+        x <: y -> y <: z -> x <: z
+          by x.numerator * z.denominator * y.denominator =
+             x.numerator * y.denominator * z.denominator < 
+             x.denominator * y.numerator * z.denominator =
+             y.numerator * z.denominator * x.denominator <
+             y.denominator * z.numerator * x.denominator =
+             z.numerator * x.denominator * y.denominator
+    )
+   
+predicate (<=:) (x y: fraction)
+  = let lhs = x.numerator * y.denominator in
+    let rhs = x.denominator * y.numerator in
+    lhs <= rhs
+
+goal nonstrict_order:
+    (forall x. x <=: x) /\
+    (forall x y. x <=: y -> y <=: x -> x === y) /\
+    (forall x y z. 
+        x.denominator >= 0 ->
+        is_finite y ->
+        z.denominator >= 0 ->
+        x <=: y -> y <=: z -> x <=: z
+          by x.numerator * z.denominator * y.denominator =
+             x.numerator * y.denominator * z.denominator <= 
+             x.denominator * y.numerator * z.denominator =
+             y.numerator * z.denominator * x.denominator <=
+             y.denominator * z.numerator * x.denominator =
+             z.numerator * x.denominator * y.denominator
+    )
+ 
+   
+(* let's say we want to add 'infinite' as a representation -- things break down *)
+    
+predicate is_infinite (x: fraction)
+  = x.numerator <> 0 /\ x.denominator = 0
+
+goal transitivity_with_inf:
+    forall x y z.  (is_finite y \/ is_infinite y) -> x === y -> y === z -> x === z
+         by x.numerator * z.denominator * y.numerator = z.numerator * x.denominator * y.numerator 
+    
+goal add_is_closed_inf_with_fin:
+    forall a b. is_infinite a -> is_finite b -> is_infinite (add a b)
+goal mul_is_closed_inf_without_zero:
+    forall a b. is_infinite a -> not b === zero -> is_infinite (mul a b)
+
+goal add_not_closed:
+    forall a b. is_infinite a -> is_infinite b -> not is_infinite (add a b) /\ not is_finite (add a b)
+
+(* integer acceptation *)
+
+function from_int (x: int): fraction
+  = { numerator = x;
+      denominator = 1 }
+      
+function floor (x: fraction): int
+  = div x.numerator x.denominator
+
+function ceil (x: fraction): int
+  = div (x.numerator + x.denominator - 1) x.denominator
+  
+let lemma division_fact (x d1 d2: int)
+   requires { d1 > 0 }
+   requires { d2 > 0 }
+   ensures { div (div x d1) d2 = div x (d1*d2) }
+= assert { x = d1*d2*div x (d1*d2) + mod x (d1*d2) };
+  assert { div x d1 = d2*div x (d1*d2) + div (mod x (d1*d2)) d1 };
+  assert { div (div x d1) d2 = div x (d1*d2) + div (div (mod x (d1*d2)) d1) d2 };
+
+lemma floor_transp:
+    forall x y. is_finite x -> is_finite y -> x === y -> floor x = floor y
+      by
+          div y.numerator y.denominator = div (div (x.numerator*y.denominator) x.denominator) y.denominator
+                                        = div (div (x.numerator*y.denominator) y.denominator) x.denominator = div x.numerator x.denominator
+      by
+          div (x.numerator*y.denominator) x.denominator = div (y.numerator*x.denominator) x.denominator = y.numerator
+  
+goal int_cvt_ord:
+    forall x y. x <= y <-> from_int x <=: from_int y
+
+goal int_cvt:
+    forall x. 
+       is_finite x -> from_int (floor x) <=: x <=: from_int (ceil x)
+      by forall x y z. x > 0 -> y > 0 -> z >= 0 -> 
+                     { numerator = x; denominator = 1 } ===
+                     { numerator = x*y; denominator = y } <=:
+                     { numerator = x*y+z; denominator = y }
+    
+goal ceil_floor_eq:
+    forall x. floor (from_int x) = x = ceil (from_int x) 
+
+lemma ord_ceil_floor:
+    forall x. is_finite x -> floor x <= ceil x <= floor x+1
+      by forall x d k. k >= 0 -> d > 0 -> div x d <= div (x+k) d 
+
+predicate is_whole (x: fraction)
+  = mod x.numerator x.denominator = 0
+
+lemma is_whole_sanity:
+    forall x. is_finite x -> (is_whole x <-> (exists n. x === from_int n))
+    
+       by (is_whole x -> x === from_int (div x.numerator x.denominator))
+       /\ forall k. from_int k === x -> x.numerator = x.denominator*k
+
+lemma eqv_whole:
+   forall x y. is_finite x -> is_finite y -> x === y -> is_whole x = is_whole y
+  by
+   forall x y. is_finite x -> is_finite y -> x === y -> is_whole x -> is_whole y
+  by
+    forall n. x === from_int n -> y === from_int n
+   by 
+    forall x y z.  is_finite y -> x === y -> y === z -> x === z
+         by x.numerator * z.denominator * y.numerator = z.numerator * x.denominator * y.numerator 
+
+lemma ceil_floor_whole:
+    forall y. is_finite y -> (floor y = ceil y <-> is_whole y)
+      by is_whole y -> y === from_int (div y.numerator y.denominator)
+
+lemma ceil_floor_ne:
+    forall x. is_finite x -> not is_whole x -> x.numerator <> 0 /\ floor x+1 = ceil x 
+       by floor x <> ceil x
+
+goal ceil_transp:
+    forall x y. is_finite x -> is_finite y -> x === y -> ceil x = ceil y

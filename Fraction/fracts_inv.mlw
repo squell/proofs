@@ -1,0 +1,102 @@
+use int.Int
+
+type fraction = { numerator: int; denominator: int; }
+  invariant { numerator >= 0 }
+  invariant { denominator > 0 }
+
+let function add (x y: fraction): fraction 
+  = { numerator = x.numerator * y.denominator + y.numerator * x.denominator;
+      denominator = x.denominator * y.denominator }
+
+let function sub (x y: fraction): fraction 
+  requires { x.numerator * y.denominator >= y.numerator * x.denominator }
+  = { numerator = x.numerator * y.denominator - y.numerator * x.denominator;
+      denominator = x.denominator * y.denominator }
+
+let function mul (x y: fraction): fraction
+  = { numerator = x.numerator * y.numerator;
+      denominator = x.denominator * y.denominator }
+
+let function div (x y: fraction): fraction
+  requires { y.numerator <> 0 }
+  = { numerator = x.numerator * y.denominator;
+      denominator = x.denominator * y.numerator }
+
+predicate cmp (int_cmp: int -> int -> bool) (x y: fraction)
+  = let lhs = x.numerator * y.denominator in
+    let rhs = x.denominator * y.numerator in
+    int_cmp lhs rhs 
+
+predicate (<=:) (x y: fraction) 
+  = cmp (<=) x y
+
+predicate (<:) (x y: fraction) 
+  = cmp (<) x y
+  
+predicate (===) (x: fraction) (y: fraction)
+  = x.numerator * y.denominator = x.denominator * y.numerator
+
+use int.ComputerDivision as I
+
+function trunc (x: fraction): int
+  = I.div x.numerator x.denominator
+  
+let function from_uint (x: int): fraction
+  requires { x >= 0 }
+  = { numerator = x; denominator = 1 }
+
+let function divide_and_return_whole_number (x y: fraction): int
+  requires { y.numerator <> 0 }
+  = I.div (x.numerator * y.denominator) (x.denominator * y.numerator)
+
+use real.RealInfix
+use real.FromInt
+
+function eval (x: fraction): real
+  = from_int x.numerator /. from_int x.denominator
+
+goal add_adds:
+  forall x y. eval (add x y) = eval x +. eval y
+    by
+      eval (add x y)
+      = from_int (x.numerator*y.denominator + y.numerator*x.denominator) /. from_int (x.denominator*y.denominator)
+  
+goal sub_subs:
+  forall x y. y <=: x -> eval (sub x y) = eval x -. eval y
+    by
+      eval (sub x y) 
+      = from_int (x.numerator*y.denominator - y.numerator*x.denominator) /. from_int (x.denominator*y.denominator)
+      = from_int (x.numerator*y.denominator) /. from_int (x.denominator*y.denominator) -. from_int (y.numerator*x.denominator) /. from_int (x.denominator*y.denominator)
+
+goal mul_muls:
+  forall x y. eval (mul x y) = eval x *. eval y
+
+let constant zero: fraction = { numerator = 0; denominator = 1 }
+
+goal div_divs:
+  forall x y. not y === zero -> eval (div x y) = eval x /. eval y
+
+goal eq_eqs:
+  forall x y. x === y -> eval x = eval y
+
+goal le_les:
+  forall x y. x <=: y -> eval x <=. eval y
+    by
+      ((from_int x.numerator *. from_int y.denominator) /. from_int x.denominator) /. from_int y.denominator <=. eval y
+
+goal lt_lts:
+  forall x y. x <: y -> eval x <. eval y
+    by
+      ((from_int x.numerator *. from_int y.denominator) /. from_int x.denominator) /. from_int y.denominator <. eval y
+   
+use real.Truncate
+   
+goal trunc_truncs:
+  forall x. trunc x = truncate (eval x)
+  
+goal int_cvt:
+  forall x. x >= 0 -> eval (from_uint x) = from_int x
+
+goal div_whole:
+  forall x y. not y === zero -> divide_and_return_whole_number x y = truncate (eval x /. eval y)
+    by trunc (div x y) = truncate (eval (div x y))

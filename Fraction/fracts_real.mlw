@@ -1,0 +1,75 @@
+use int.Int
+use int.EuclideanDivision
+
+type fraction = { numerator: int; denominator: int; }
+
+function add (x y: fraction): fraction 
+  = { numerator = x.numerator * y.denominator + y.numerator * x.denominator;
+      denominator = x.denominator * y.denominator }
+
+function mul (x y: fraction): fraction
+  = { numerator = x.numerator * y.numerator;
+      denominator = x.denominator * y.denominator }
+
+function inv_fract (x: fraction): fraction
+  = { numerator = x.denominator;
+      denominator = x.numerator }
+      
+function div (x y: fraction): fraction
+  = { numerator = x.numerator * y.denominator;
+      denominator = x.denominator * y.numerator }
+      
+constant one: fraction = { numerator = 1; denominator = 1 }
+constant zero: fraction = { numerator = 0; denominator = 1 }
+
+predicate (===) (x: fraction) (y: fraction)
+  = x.numerator * y.denominator = x.denominator * y.numerator
+
+predicate (<=:) (x y: fraction)
+  = let lhs = x.numerator * y.denominator in
+    let rhs = x.denominator * y.numerator in
+    lhs <= rhs
+
+predicate is_finite (x: fraction) = x.denominator > 0
+
+goal add_is_closed:
+    forall a b. is_finite a -> is_finite b -> is_finite (add a b)
+
+goal mul_is_closed:
+    forall a b. is_finite a -> is_finite b -> is_finite (mul a b)
+
+goal inv_is_closed:
+    forall a. a.numerator > 0 -> is_finite (inv_fract a)
+
+goal div_is_closed:
+    forall a b. is_finite a -> b.numerator > 0 -> is_finite (div a b)
+
+use real.RealInfix
+use real.FromInt
+
+function eval (x: fraction): real
+  = from_int x.numerator /. from_int x.denominator
+
+goal mul_muls:
+  forall x y. is_finite x -> is_finite y -> eval (mul x y) = eval x *. eval y
+
+goal add_adds:
+  forall x y.  is_finite x -> is_finite y -> eval (add x y) = eval x +. eval y
+
+goal inv_invs:
+  forall x. is_finite x -> not x === zero -> eval (inv_fract x) = 1.0 /. eval x
+
+goal div_divs:
+  forall x y. is_finite x -> is_finite y -> not y === zero -> eval (div x y) = eval x /. eval y
+
+goal eq_eqs:
+  forall x y. is_finite x -> is_finite y -> x === y -> eval x = eval y
+    by 
+       (from_int x.numerator *. from_int y.denominator) /. from_int x.denominator
+       = 
+       (from_int y.numerator *. from_int x.denominator) /. from_int x.denominator
+
+goal le_les:
+  forall x y. is_finite x -> is_finite y -> x <=: y -> eval x <=. eval y
+    by
+       ((from_int x.numerator *. from_int y.denominator) /. from_int x.denominator) /. from_int y.denominator <=. eval y

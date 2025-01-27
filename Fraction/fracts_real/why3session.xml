@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="1" name="CVC4" version="1.8" timelimit="15" steplimit="0" memlimit="4000"/>
+<prover id="3" name="Eprover" version="2.6" timelimit="15" steplimit="0" memlimit="4000"/>
+<prover id="4" name="Alt-Ergo" version="2.4.1" timelimit="15" steplimit="0" memlimit="4000"/>
+<file format="whyml" proved="true">
+<path name=".."/><path name="fracts_real.mlw"/>
+<theory name="Top" proved="true">
+ <goal name="add_is_closed" proved="true">
+ <proof prover="4"><result status="valid" time="0.00" steps="11"/></proof>
+ </goal>
+ <goal name="mul_is_closed" proved="true">
+ <proof prover="4"><result status="valid" time="0.00" steps="11"/></proof>
+ </goal>
+ <goal name="inv_is_closed" proved="true">
+ <proof prover="4"><result status="valid" time="0.00" steps="4"/></proof>
+ </goal>
+ <goal name="div_is_closed" proved="true">
+ <proof prover="4"><result status="valid" time="0.00" steps="8"/></proof>
+ </goal>
+ <goal name="mul_muls" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="mul_muls.0" proved="true">
+  <proof prover="3"><result status="valid" time="0.03"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="add_adds" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="add_adds.0" proved="true">
+  <proof prover="1"><result status="valid" time="3.69" steps="743984"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="inv_invs" proved="true">
+ <proof prover="4"><result status="valid" time="0.01" steps="286"/></proof>
+ </goal>
+ <goal name="div_divs" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="div_divs.0" proved="true">
+  <proof prover="4"><result status="valid" time="0.12" steps="5722"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="eq_eqs" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="eq_eqs.0" proved="true">
+  <proof prover="4"><result status="valid" time="0.01" steps="141"/></proof>
+  </goal>
+  <goal name="eq_eqs.1" proved="true">
+  <proof prover="3"><result status="valid" time="0.55"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="le_les" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="le_les.0" proved="true">
+  <proof prover="1"><result status="valid" time="0.25" steps="48156"/></proof>
+  </goal>
+  <goal name="le_les.1" proved="true">
+  <proof prover="4"><result status="valid" time="1.02" steps="46073"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>
