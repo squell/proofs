@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="CVC4" version="1.8" timelimit="15" steplimit="0" memlimit="4000"/>
+<prover id="1" name="Alt-Ergo" version="2.4.1" timelimit="15" steplimit="0" memlimit="4000"/>
+<prover id="2" name="Eprover" version="2.6" timelimit="15" steplimit="0" memlimit="4000"/>
+<file format="whyml" proved="true">
+<path name=".."/><path name="fractions.mlw"/>
+<theory name="Top" proved="true">
+ <goal name="fraction&#39;vc" expl="VC for fraction" proved="true">
+ <proof prover="0"><result status="valid" time="0.00" steps="265"/></proof>
+ </goal>
+ <goal name="add&#39;vc" expl="VC for add" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="2126"/></proof>
+ </goal>
+ <goal name="sub&#39;vc" expl="VC for sub" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="1120"/></proof>
+ </goal>
+ <goal name="mul&#39;vc" expl="VC for mul" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="2237"/></proof>
+ </goal>
+ <goal name="div&#39;vc" expl="VC for div" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="1756"/></proof>
+ </goal>
+ <goal name="from_uint&#39;vc" expl="VC for from_uint" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="2787"/></proof>
+ </goal>
+ <goal name="divide_and_return_whole_number&#39;vc" expl="VC for divide_and_return_whole_number" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="4072"/></proof>
+ </goal>
+ <goal name="add_adds" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="add_adds.0" proved="true">
+  <proof prover="0"><result status="valid" time="0.16" steps="60003"/></proof>
+  </goal>
+  <goal name="add_adds.1" proved="true">
+  <proof prover="0"><result status="valid" time="0.48" steps="106729"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="sub_subs" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="sub_subs.0" proved="true">
+  <proof prover="0"><result status="valid" time="0.20" steps="39107"/></proof>
+  </goal>
+  <goal name="sub_subs.1" proved="true">
+  <proof prover="0"><result status="valid" time="0.27" steps="106332"/></proof>
+  </goal>
+  <goal name="sub_subs.2" proved="true">
+  <proof prover="0"><result status="valid" time="5.04" steps="1186666"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="mul_muls" proved="true">
+ <proof prover="2"><result status="valid" time="0.31"/></proof>
+ </goal>
+ <goal name="zero&#39;vc" expl="VC for zero" proved="true">
+ <proof prover="0"><result status="valid" time="0.01" steps="4894"/></proof>
+ </goal>
+ <goal name="div_divs" proved="true">
+ <proof prover="1"><result status="valid" time="0.14" steps="9258"/></proof>
+ <proof prover="2"><result status="valid" time="0.30"/></proof>
+ </goal>
+ <goal name="eq_eqs" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="eq_eqs.0" proved="true">
+  <proof prover="2"><result status="valid" time="1.46"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="le_les" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="le_les.0" proved="true">
+  <proof prover="0"><result status="valid" time="0.06" steps="22476"/></proof>
+  </goal>
+  <goal name="le_les.1" proved="true">
+  <proof prover="1"><result status="valid" time="2.83" steps="113962"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="lt_lts" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="lt_lts.0" proved="true">
+  <proof prover="0"><result status="valid" time="0.33" steps="32916"/></proof>
+  </goal>
+  <goal name="lt_lts.1" proved="true">
+  <proof prover="1"><result status="valid" time="2.45" steps="94256"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="trunc_truncs" proved="true">
+ <proof prover="0"><result status="valid" time="0.12" steps="43482"/></proof>
+ </goal>
+ <goal name="int_cvt" proved="true">
+ <proof prover="0"><result status="valid" time="0.03" steps="10477"/></proof>
+ </goal>
+ <goal name="div_whole" proved="true">
+ <transf name="split_vc" proved="true" >
+  <goal name="div_whole.0" proved="true">
+  <proof prover="0"><result status="valid" time="0.18" steps="55154"/></proof>
+  </goal>
+  <goal name="div_whole.1" proved="true">
+  <proof prover="1"><result status="valid" time="1.75" steps="75154"/></proof>
+  <proof prover="2"><result status="valid" time="2.97"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>
