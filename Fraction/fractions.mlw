@@ -78,7 +78,7 @@ goal div_divs:
   forall x y. not y === zero -> eval (div x y) = eval x /. eval y
 
 goal eq_eqs:
-  forall x y. x === y -> eval x = eval y
+  forall x y. x === y <-> eval x = eval y
 
 goal le_les:
   forall x y. x <=: y -> eval x <=. eval y
