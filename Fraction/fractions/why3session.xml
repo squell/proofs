@@ -73,9 +73,12 @@
  <proof prover="2"><result status="valid" time="0.59"/></proof>
  </goal>
  <goal name="eq_eqs" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="split_goal_full" proved="true" >
   <goal name="eq_eqs.0" proved="true">
-  <proof prover="2"><result status="valid" time="1.39"/></proof>
+  <proof prover="2"><result status="valid" time="7.20"/></proof>
+  </goal>
+  <goal name="eq_eqs.1" proved="true">
+  <proof prover="2"><result status="valid" time="0.40"/></proof>
   </goal>
  </transf>
  </goal>
